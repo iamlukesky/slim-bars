@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>D3 canvas slim bars</title>
+    <style>
+        html,
+        body {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script src="node_modules/d3/dist/d3.min.js"></script>
+    <script>
+
+
+
+        const width = window.innerWidth
+        const height = window.innerHeight
+
+        const canvas = d3.select('body')
+            .append('canvas')
+            .attr('width', width)
+            .attr('height', height)
+
+        const padding = {
+            top: 50, bottom: 50,
+            left: 100, right: 100
+        }
+
+        const w = width - (padding.left + padding.right)
+        const h = height - (padding.top + padding.bottom)
+
+        const x = d3.scaleLinear()
+            .domain([0, 1])
+            .range([0, w])
+
+        const y = d3.scaleLinear()
+            .domain([0, 1])
+            .range([h, 0])
+        // .range([h, 0])
+
+        const c = canvas.node().getContext('2d')
+
+        c.fillStyle = 'rgb(50, 50, 50)'
+        c.fillRect(0, 0, width, height)
+
+        c.lineWidth = '2'
+
+        c.save()
+
+        c.translate(padding.left, padding.top)
+
+        c.strokeStyle = 'rgba(255, 255, 255, 0.1)'
+        c.strokeRect(0, 0, w, h)
+
+        // baseline
+        // c.save()
+        // c.strokeStyle = 'white'
+        // c.translate(0, y(0))
+        // c.beginPath()
+        // c.moveTo(0, 0)
+        // c.lineTo(x(1), 0)
+        // c.stroke()
+        // c.restore()
+
+        // draw a bar
+        drawBar(0.5, 0.75)
+        // c.save()
+        // c.strokeStyle = 'white'
+        // c.translate(x(0.5), y(0.5))
+        // c.strokeRect(-5, -5, 10, 10)
+        // c.beginPath()
+        // c.moveTo(0, 0)
+        // c.lineTo(0, y(0.5))
+        // c.stroke()
+        // c.restore()
+
+
+
+        c.restore()
+
+        function drawBar(_x, _y) {
+            console.log(w, x(_x), h,  y(_y))
+            console.log(y(1))
+
+            c.save()
+            c.strokeStyle = 'white'
+            c.translate(x(_x), y(_y))
+            // c.translate(0, -y(_y))
+            c.strokeRect(-5, -5, 10, 10)
+            c.restore()
+
+            c.beginPath()
+            c.strokeStyle = 'white'
+            c.moveTo(x(_x), y(0))
+            c.lineTo(x(_x), y(_y))
+            c.stroke()
+        }
+
+
+    </script>
+</body>
+
+</html>
