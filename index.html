@@ -19,7 +19,9 @@
             background: #333;
         }
 
-        rect, line, path {
+        rect,
+        line,
+        path {
             shape-rendering: crispEdges;
         }
     </style>
@@ -78,11 +80,59 @@
             .select('.domain')
             .attr('stroke', 'white')
 
+        // this is the bar in the bar chart, should later be bound to data
+        const data = {x: 0.5, y: 0.25}
+
         g.append('line')
+            .attr('id', 'line')
             .attr('stroke', 'white')
             .attr('stroke-width', 1)
-            .attr('x1', x(0.5)).attr('y1', y(0))
-            .attr('x2', x(0.5)).attr('y2', y(0.5))
+            .attr('x1', x(data.x)).attr('y1', y(0))
+            .attr('x2', x(data.x)).attr('y2', y(data.y))
+
+        g.append('g')
+            .attr('transform', `translate(${x(data.x)}, ${y(data.y)})`)
+            .append('circle')
+            .attr('id', 'circle')
+            .attr('stroke', 'white')
+            .attr('stroke-dasharray', '3, 3')
+            .attr('fill', 'none')
+            .attr('stroke-width', 1)
+            .attr('cx', 0).attr('cy', 0)
+            .attr('r', 15)
+
+
+        const t0 = new Date()
+
+        d3.timer(() => {
+            const delta = Date.now() - t0
+
+        // const a = new Date().getTime() * 0.000001
+            const a = (Math.sin(new Date().getTime() * 0.004) * Math.PI * 10)
+
+            svg.select('#circle')
+                .attr('transform', `rotate(${delta * 0.1})`)
+        })
+
+
+
+        // requestAnimationFrame(update)
+
+        // function update() {
+
+        //     const _y = ((Math.sin(new Date().getTime() * 0.01)) + 1) / 2
+        //     console.log(_y)
+        //     d3.select('#circle')
+        //         .attr('transform', `rotate(${_y})`)
+        //     requestAnimationFrame(update)
+
+        //     // const _x = ((Math.cos(new Date().getTime() * 0.001)) + 1) / 2
+
+        //     // d3.select('#line')
+        //     //     .attr('x1', x(_x)).attr('y1', y(0))
+        //     //     .attr('x2', x(_x)).attr('y2', y(_y))
+        //     // requestAnimationFrame(update)
+        // }
 
 
 
