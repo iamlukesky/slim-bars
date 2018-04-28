@@ -126,10 +126,29 @@
                     .attr('r', 15)
                     .attr('stroke', 'white')
             })
+            .call(d3.drag()
+                .on('start', function(d){
+                    d3.select(this).raise()
+                })
+                .on('drag', function(d){
+                    console.log(d3.event.y)
+                    d = {
+                        x: d3.event.x,
+                        y: d3.event.y
+                    }
+                    d3.select(this)
+                        .attr('cx', d.x)
+                        .attr('cy', d.y)
+                })
+                .on('end', function(d){
+                    d3.select(this)
+                        .attr('fill', 'rgba(200, 0, 0, 0.5')
+                })
+            )
 
+        
 
         const t0 = new Date()
-
         d3.timer(() => {
             const delta = Date.now() - t0
 
